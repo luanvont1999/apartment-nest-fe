@@ -1,0 +1,111 @@
+import { useRequest } from 'ahooks'
+import { AxiosError } from 'axios'
+import { FormEvent, useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import authService from '@/api/auth'
+import { AuthResponse } from '@/api/types/auth'
+import { Icons } from '@/components/icons'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
+import { handleError, setLocalStorage } from '@/utils/helpers'
+import { setUserInfo } from '@/store/reducers/user'
+import { useNavigate } from 'react-router-dom'
+
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [form, setForm] = useState({
+    username: 'admin',
+    password: '12345678'
+  })
+
+  const { runAsync: onLogin, loading: loginLoading } = useRequest(authService.login, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res?.data) {
+        const data = res.data as AuthResponse
+        if (data.user.role === 'admin') {
+          setLocalStorage('token', {
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken
+          })
+          // message.success('Login Success')
+          dispatch(setUserInfo(data.user))
+          navigate('/dashboard')
+        } else {
+          // message.error('Account or password is incorrect')
+        }
+      }
+    },
+    onError: (err: Error | AxiosError) => {
+      // if (axios.isAxiosError(err)) {
+      //   message.error(err.response?.data.message ?? 'Something went wrong')
+      // }
+      handleError(err)
+    }
+  })
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    onLogin(form)
+  }
+
+  return (
+    <div className={cn('grid gap-6', className)} {...props}>
+      <form onSubmit={onSubmit}>
+        <div className='grid gap-2'>
+          <div className='grid gap-1'>
+            <Label className='sr-only' htmlFor='email'>
+              Email
+            </Label>
+            <Input
+              id='email'
+              placeholder='name@example.com'
+              type='text'
+              autoCapitalize='none'
+              autoComplete='email'
+              autoCorrect='off'
+              value={form.username}
+              disabled={loginLoading}
+            />
+            <Input
+              id='email'
+              placeholder='Nhập mật khẩu...'
+              type='pasword'
+              autoCapitalize='none'
+              autoComplete='email'
+              autoCorrect='off'
+              value={form.password}
+              disabled={loginLoading}
+            />
+          </div>
+          <Button disabled={loginLoading}>
+            {loginLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+            Đăng nhập
+          </Button>
+        </div>
+      </form>
+      <div className='relative'>
+        <div className='absolute inset-0 flex items-center'>
+          <span className='w-full border-t' />
+        </div>
+        <div className='relative flex justify-center text-xs uppercase'>
+          <span className='bg-background px-2 text-muted-foreground'>Or continue with</span>
+        </div>
+      </div>
+      <Button variant='outline' type='button' disabled={loginLoading}>
+        {loginLoading ? (
+          <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
+        ) : (
+          <Icons.gitHub className='mr-2 h-4 w-4' />
+        )}{' '}
+        Github
+      </Button>
+    </div>
+  )
+}
