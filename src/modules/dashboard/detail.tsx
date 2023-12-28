@@ -54,11 +54,13 @@ export default function DashboardDetail() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{post?.title}</DialogTitle>
+                <DialogTitle>
+                  <p className='text-center'>{post?.title}</p>
+                </DialogTitle>
               </DialogHeader>
-              <div className=''>{post?.content}</div>
-              <div className='flex justify-center'>
+              <div className='flex flex-col items-center'>
                 <QRCode value={`${ENV.websiteUrl}/question/${post?.id}`} size={160} />
+                <p className='mt-2'>Quét QRCode để chia sẻ ý kiến của bạn</p>
               </div>
               <div className='text-right'>
                 <Button asChild>

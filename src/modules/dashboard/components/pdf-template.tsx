@@ -26,16 +26,16 @@ const styles = StyleSheet.create({
   },
   section: {
     margin: 10,
-    padding: 10,
-    flexGrow: 1
+    padding: 10
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   qr: {
-    width: 160,
-    height: 160,
+    width: 320,
+    height: 320,
     marginHorizontal: 'auto'
   }
 })
@@ -46,7 +46,6 @@ export default function PDFTemplate({ post }: { post: IPost }) {
       <Page size='A4' style={styles.page}>
         <View style={styles.section}>
           <Text style={styles.header}>{post.title}</Text>
-          <Text>{post.content}</Text>
         </View>
         <View
           style={{

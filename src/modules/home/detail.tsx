@@ -30,12 +30,15 @@ export default function QuestionDetail() {
 
   return (
     <div className='min-h-screen bg-secondary p-2'>
-      <div className='bg-white p-4 rounded-md'>
-        <h1 className='text-2xl md:text-3xl font-bold'>{post?.title}</h1>
-        <p className='text-sm text-muted-foreground'>{moment(post?.createdAt).format('DD/MM/YYYY')}</p>
-      </div>
+      <div className='container max-w-[1024px]'>
+        <div className='bg-white p-4 rounded-md'>
+          <h1 className='text-2xl md:text-3xl font-bold'>{post?.title}</h1>
+          <p className='text-sm text-muted-foreground'>{moment(post?.createdAt).format('DD/MM/YYYY')}</p>
+          <p className='mt-4'>{post?.content}</p>
+        </div>
 
-      {post?.questions && <AnswerForm postId={post.id} questions={post?.questions} />}
+        {post?.questions && <AnswerForm postId={post.id} questions={post?.questions} />}
+      </div>
     </div>
   )
 }

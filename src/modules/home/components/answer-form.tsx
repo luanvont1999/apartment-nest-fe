@@ -1,5 +1,7 @@
 import postService from '@/api/post'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { IQuestion } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
@@ -62,20 +64,34 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
               Câu hỏi {index + 1}: {q.title}
             </h3>
 
-            <div className='flex flex-col gap-y-4'>
+            <RadioGroup className='flex flex-col gap-y-4'>
               {q.answers?.map((a) => (
-                <div
-                  key={a.id}
-                  className={clsx(
-                    'border-2 rounded p-2 px-4 cursor-pointer hover:border-primary',
-                    answers[q.id] && answers[q.id].includes(a.id) ? 'border-primary' : 'bg-secondary'
+                <div className='flex gap-x-2 items-center'>
+                  {q.type === 'single' ? (
+                    <RadioGroupItem
+                      checked={answers[q.id] && answers[q.id].includes(a.id)}
+                      value={`${a.id}`}
+                      onClick={() => handleClickAnswer(q.id, a.id)}
+                    />
+                  ) : (
+                    <Checkbox
+                      checked={answers[q.id] && answers[q.id].includes(a.id)}
+                      onClick={() => handleClickAnswer(q.id, a.id)}
+                    />
                   )}
-                  onClick={() => handleClickAnswer(q.id, a.id)}
-                >
-                  {a.title}
+                  <div
+                    key={a.id}
+                    className={clsx(
+                      'border-2 rounded p-2 px-4 cursor-pointer hover:border-primary flex-1',
+                      answers[q.id] && answers[q.id].includes(a.id) ? 'border-primary' : 'bg-secondary'
+                    )}
+                    onClick={() => handleClickAnswer(q.id, a.id)}
+                  >
+                    {a.title}
+                  </div>
                 </div>
               ))}
-            </div>
+            </RadioGroup>
           </div>
         ))}
       </div>
