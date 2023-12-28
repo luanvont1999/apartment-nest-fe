@@ -1,3 +1,4 @@
+import { ENV } from '@/constants'
 import { IPost } from '@/constants/types'
 import { Document, Font, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import QRCode from 'qrcode'
@@ -54,7 +55,7 @@ export default function PDFTemplate({ post }: { post: IPost }) {
             textAlign: 'center'
           }}
         >
-          <Image src={QRCode.toDataURL('asdasda')} style={styles.qr} />
+          <Image src={QRCode.toDataURL(`${ENV.websiteUrl}/question/${post.id}`)} style={styles.qr} />
           <Text>Quét QRCode để chia sẻ ý kiến của bạn</Text>
         </View>
       </Page>

@@ -13,14 +13,7 @@ import { useEffect, useState } from 'react'
 const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: { title: string }[] } = {
   title: '',
   type: 'single',
-  answers: [
-    {
-      title: ''
-    },
-    {
-      title: ''
-    }
-  ]
+  answers: []
 }
 
 export default function DashboardCreate() {
@@ -60,14 +53,13 @@ export default function DashboardCreate() {
   }
 
   const handleAddQuestion = () => {
-    setQuestions((prev) => [...prev, { ...DEFAULT_QUESTION }])
+    setQuestions((prev) => [...prev, { title: '', type: 'single', answers: [] }])
   }
 
   const handleRemoveQuestion = (index: number) => {
     setQuestions((prev) => {
       prev.splice(index, index)
-      console.log(prev)
-      return prev
+      return [...prev]
     })
   }
 
@@ -75,16 +67,14 @@ export default function DashboardCreate() {
     setQuestions((prev) => {
       const _q = prev[qIndex]
       _q.title = value
-      return prev
+      return [...prev]
     })
   }
 
   const handleChangeQuestionType = (qIndex: number) => (value: boolean) => {
     setQuestions((prev) => {
       const _q = prev[qIndex]
-      console.log(_q)
       _q.type = value ? 'multiple' : 'single'
-      console.log(prev)
       return [...prev]
     })
   }
