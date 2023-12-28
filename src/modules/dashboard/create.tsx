@@ -9,6 +9,7 @@ import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
 import { Plus, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: { title: string }[] } = {
   title: '',
@@ -17,6 +18,7 @@ const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: {
 }
 
 export default function DashboardCreate() {
+  const navigate = useNavigate()
   const [isQuestion, setIsQuestion] = useState(false)
   const [form, setForm] = useState({
     title: '',
@@ -31,6 +33,7 @@ export default function DashboardCreate() {
     manual: true,
     onSuccess: (res) => {
       console.log(res)
+      navigate('/admin/dashboard')
     },
     onError: (err: Error | AxiosError) => {
       handleError(err)
