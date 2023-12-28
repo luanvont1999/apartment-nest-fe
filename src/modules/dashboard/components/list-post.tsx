@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { IPost, ListPagination } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
+import { Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function ListPost() {
   const navigate = useNavigate()
@@ -22,6 +24,16 @@ export default function ListPost() {
     onSuccess: (res) => {
       console.log(res)
       setPosts(res.data as ListPagination<IPost>)
+    },
+    onError: (err: Error | AxiosError) => {
+      handleError(err)
+    }
+  })
+  const { runAsync: onDelete } = useRequest(postService.deletePost, {
+    manual: true,
+    onSuccess: () => {
+      fetchPosts()
+      toast('Xoá thành công')
     },
     onError: (err: Error | AxiosError) => {
       handleError(err)
@@ -50,6 +62,7 @@ export default function ListPost() {
           <TableRow>
             <TableHead>Bài viết</TableHead>
             <TableHead className='w-40 text-center'>Ngày đăng</TableHead>
+            <TableHead className='w-20' />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -57,6 +70,18 @@ export default function ListPost() {
             <TableRow key={item.id} className='cursor-pointer' onClick={() => navigate(`./${item.id}`)}>
               <TableCell>{item.title}</TableCell>
               <TableCell className='w-40 text-center'>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+              <TableCell className='w-20 text-right'>
+                <Button
+                  variant='destructive'
+                  size='sm'
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onDelete(item.id)
+                  }}
+                >
+                  <Trash2 className='w-4 h-4' />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
