@@ -63,7 +63,7 @@ export default function DashboardDetail() {
               <div className='text-right'>
                 <Button asChild>
                   {post && (
-                    <PDFDownloadLink document={<PDFTemplate post={post} />} fileName='fee_acceptance.pdf'>
+                    <PDFDownloadLink document={<PDFTemplate post={post} />} fileName='announcement.pdf'>
                       In
                     </PDFDownloadLink>
                   )}
