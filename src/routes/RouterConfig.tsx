@@ -9,6 +9,7 @@ import DashboardCreate from '@/modules/dashboard/create'
 import HomePage from '@/modules/home'
 import QuestionDetail from '@/modules/home/detail'
 import SuccessPage from '@/modules/home/success'
+import DashboardDetail from '@/modules/dashboard/detail'
 export const Routes = createBrowserRouter([
   {
     path: '/',
@@ -59,6 +60,10 @@ export const Routes = createBrowserRouter([
           {
             path: '/admin/dashboard/create',
             element: <DashboardCreate />
+          },
+          {
+            path: '/admin/dashboard/:id',
+            element: <DashboardDetail />
           }
         ]
       }

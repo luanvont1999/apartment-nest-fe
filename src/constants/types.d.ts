@@ -11,7 +11,7 @@ export interface IPost {
   content: string
   status: 'active' | 'inactive'
 
-  questions?: IQuestion[]
+  questions: IQuestion[]
 
   createdAt: string
   updatedAt: string
@@ -37,6 +37,17 @@ export interface IAnswer {
   status: 'active' | 'inactive'
 
   questionId?: number
+
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IComment {
+  id: number
+  content: string
+  status: 'active' | 'inactive'
+
+  postId: number
 
   createdAt: string
   updatedAt: string

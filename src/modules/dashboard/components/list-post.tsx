@@ -7,13 +7,14 @@ import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { DialogHeader } from '@/components/ui/dialog'
 import QRCode from 'react-qr-code'
 
 export default function ListPost() {
+  const navigate = useNavigate()
   const [posts, setPosts] = useState<ListPagination<IPost>>()
   const [target, setTarget] = useState<IPost | null>(null)
   const { runAsync: fetchPosts } = useRequest(postService.getPosts, {
@@ -53,7 +54,7 @@ export default function ListPost() {
         </TableHeader>
         <TableBody>
           {posts?.data.map((item) => (
-            <TableRow key={item.id} className='cursor-pointer' onClick={() => setTarget(item)}>
+            <TableRow key={item.id} className='cursor-pointer' onClick={() => navigate(`./${item.id}`)}>
               <TableCell>{item.title}</TableCell>
               <TableCell>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
               <TableCell>{item.title}</TableCell>
