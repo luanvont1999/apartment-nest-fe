@@ -7,7 +7,7 @@ const setPost = (payload: CreatePostDTO) => api.post('/admin/posts', payload)
 
 const getPostsWithoutAuth = () => api.get('/posts')
 const getPostByIdWithoutAuth = (id: number) => api.get(`/posts/${id}`)
-const submitAnswer = (id: number, payload: SubmitAnswerDTO) => api.patch(`/post/answer-post/${id}`, payload)
+const submitAnswer = (id: number, payload: SubmitAnswerDTO) => api.patch(`/posts/answer-post/${id}`, payload)
 
 const postService = {
   getPosts,

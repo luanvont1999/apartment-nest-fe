@@ -8,6 +8,7 @@ import BaseLayout from '@/layout/base'
 import DashboardCreate from '@/modules/dashboard/create'
 import HomePage from '@/modules/home'
 import QuestionDetail from '@/modules/home/detail'
+import SuccessPage from '@/modules/home/success'
 export const Routes = createBrowserRouter([
   {
     path: '/',
@@ -16,7 +17,8 @@ export const Routes = createBrowserRouter([
         index: true,
         element: <HomePage />
       },
-      { path: '/question/:id', element: <QuestionDetail /> }
+      { path: '/question/:id', element: <QuestionDetail /> },
+      { path: '/success', element: <SuccessPage /> }
     ]
   },
 
