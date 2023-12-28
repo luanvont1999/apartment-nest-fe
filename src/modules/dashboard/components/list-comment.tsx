@@ -21,8 +21,12 @@ export default function ListComment({ postId }: { postId: number }) {
   })
 
   useEffect(() => {
-    postId && fetchComments(postId)
+    postId && fetchComments({ postId })
   }, [fetchComments, postId])
+
+  const handleChangePage = (value: number) => {
+    fetchComments({ postId, page: value, perPage: comments?.perPage || 10 })
+  }
 
   return (
     <div>
@@ -36,7 +40,7 @@ export default function ListComment({ postId }: { postId: number }) {
           </div>
         ))}
       </div>
-      {comments && <Pagination {...comments} className='mt-4' />}
+      {comments && <Pagination {...comments} className='mt-4' onChange={handleChangePage} />}
     </div>
   )
 }

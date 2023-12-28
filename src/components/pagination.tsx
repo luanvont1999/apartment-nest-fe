@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Pagination as SPagination, PaginationContent, PaginationLink, PaginationEllipsis } from './ui/pagination'
 import { useMemo } from 'react'
 
@@ -59,10 +60,17 @@ export default function Pagination({
     }
   }, [total, perPage, siblingCount, page])
 
+  console.log(paginationRange)
+
   return (
     <SPagination className={className}>
       <PaginationContent>
         {/* Previous */}
+        {total > 0 && (
+          <PaginationLink className='cursor-pointer hover:bg-white' onClick={() => page > 1 && onChange(page - 1)}>
+            <ChevronLeft className='w-4 h-4' />
+          </PaginationLink>
+        )}
 
         {/* Body */}
         {paginationRange?.map((item, index) =>
@@ -71,8 +79,8 @@ export default function Pagination({
           ) : (
             <PaginationLink
               key={index}
-              className='cursor-pointer'
-              onClick={() => onChange(item as number)}
+              className='cursor-pointer hover:bg-white'
+              onClick={() => page !== item && onChange(item as number)}
               isActive={page === item}
             >
               {item}
@@ -81,6 +89,14 @@ export default function Pagination({
         )}
 
         {/* Next */}
+        {total > 0 && (
+          <PaginationLink
+            className='cursor-pointer hover:bg-white'
+            onClick={() => page < Math.floor(total / perPage) && onChange(page + 1)}
+          >
+            <ChevronRight className='w-4 h-4' />
+          </PaginationLink>
+        )}
       </PaginationContent>
     </SPagination>
   )

@@ -1,17 +1,17 @@
+import { useRequest } from 'ahooks'
+import { AxiosError } from 'axios'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import QRCode from 'react-qr-code'
+import { Link, useNavigate } from 'react-router-dom'
+
 import postService from '@/api/post'
 import Pagination from '@/components/pagination'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { IPost, ListPagination } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
-import { useRequest } from 'ahooks'
-import { AxiosError } from 'axios'
-import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Link, useNavigate } from 'react-router-dom'
-import moment from 'moment'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { DialogHeader } from '@/components/ui/dialog'
-import QRCode from 'react-qr-code'
 
 export default function ListPost() {
   const navigate = useNavigate()
@@ -32,6 +32,10 @@ export default function ListPost() {
     fetchPosts()
   }, [fetchPosts])
 
+  const handleChangePage = (value: number) => {
+    fetchPosts({ page: value, perPage: posts?.perPage || 10 })
+  }
+
   return (
     <div className='flex flex-col flex-1'>
       <div className='flex justify-between items-center mb-4'>
@@ -44,27 +48,21 @@ export default function ListPost() {
       <Table className='border bg-white rounded'>
         <TableHeader>
           <TableRow>
-            <TableHead>
-              <p className='font-bold'>Bài viết</p>
-            </TableHead>
-            <TableHead>Ngày đăng</TableHead>
-            <TableHead>Lượt xem</TableHead>
-            <TableHead>Lượt phản hồi</TableHead>
+            <TableHead>Bài viết</TableHead>
+            <TableHead className='w-40 text-center'>Ngày đăng</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {posts?.data.map((item) => (
             <TableRow key={item.id} className='cursor-pointer' onClick={() => navigate(`./${item.id}`)}>
               <TableCell>{item.title}</TableCell>
-              <TableCell>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
-              <TableCell>{item.title}</TableCell>
-              <TableCell>{item.title}</TableCell>
+              <TableCell className='w-40 text-center'>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      {posts && <Pagination total={posts?.total} perPage={10} page={posts.page} className='mt-2' />}
+      {posts && <Pagination {...posts} className='mt-2' onChange={handleChangePage} />}
 
       <Dialog
         open={!!target}
