@@ -9,9 +9,13 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
+import { DialogHeader } from '@/components/ui/dialog'
+import QRCode from 'react-qr-code'
 
 export default function ListPost() {
   const [posts, setPosts] = useState<ListPagination<IPost>>()
+  const [target, setTarget] = useState<IPost | null>(null)
   const { runAsync: fetchPosts } = useRequest(postService.getPosts, {
     manual: true,
     onSuccess: (res) => {
@@ -49,7 +53,7 @@ export default function ListPost() {
         </TableHeader>
         <TableBody>
           {posts?.data.map((item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.id} className='cursor-pointer' onClick={() => setTarget(item)}>
               <TableCell>{item.title}</TableCell>
               <TableCell>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
               <TableCell>{item.title}</TableCell>
@@ -60,6 +64,26 @@ export default function ListPost() {
       </Table>
 
       {posts && <Pagination total={posts?.total} perPage={10} page={posts.page} className='mt-2' />}
+
+      <Dialog
+        open={!!target}
+        onOpenChange={(value) => {
+          if (!value) setTarget(null)
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='text-center'>
+              <span className='text-2xl'>Tạo mã QR code</span>
+            </DialogTitle>
+            <DialogDescription>
+              <div className='flex justify-center mt-8'>
+                {target && <QRCode value={`https://apartment-nest-fe.vercel.app/question/${target.id}`} />}
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -19,7 +19,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export default function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [form] = useState({
+  const [form, setForm] = useState({
     username: 'admin',
     password: '12345678'
   })
@@ -34,7 +34,6 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
             accessToken: data.accessToken,
             refreshToken: data.refreshToken
           })
-          // message.success('Login Success')
           dispatch(setUserInfo(data.user))
           navigate('/admin/dashboard')
         } else {
@@ -50,6 +49,15 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
     }
   })
 
+  const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { value, name } = event.target
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     onLogin(form)
@@ -64,24 +72,25 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
               Email
             </Label>
             <Input
-              id='email'
-              placeholder='name@example.com'
+              name='username'
+              placeholder='Tên đăng nhập'
               type='text'
               autoCapitalize='none'
               autoComplete='email'
               autoCorrect='off'
               value={form.username}
               disabled={loginLoading}
+              onChange={handleChangeForm}
             />
             <Input
-              id='email'
-              placeholder='Nhập mật khẩu...'
+              name='password'
+              placeholder='Mật khẩu'
               type='pasword'
               autoCapitalize='none'
-              autoComplete='email'
               autoCorrect='off'
               value={form.password}
               disabled={loginLoading}
+              onChange={handleChangeForm}
             />
           </div>
           <Button disabled={loginLoading}>

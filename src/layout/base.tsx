@@ -2,9 +2,20 @@ import { Button } from '@/components/ui/button'
 import { Building2, LogOut } from 'lucide-react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from './nav'
+import { useRequest } from 'ahooks'
+import authService from '@/api/auth'
+import { removeLocalStorage } from '@/utils/helpers'
 
 export default function BaseLayout() {
   const navigate = useNavigate()
+
+  const { runAsync: handleLogout } = useRequest(authService.logout, {
+    manual: true,
+    onFinally: () => {
+      removeLocalStorage('token')
+      navigate('/admin/login')
+    }
+  })
   return (
     <div className='min-h-screen flex flex-col border bg-secondary'>
       <div className='border-b-2 bg-white'>
@@ -19,7 +30,7 @@ export default function BaseLayout() {
               <Navbar />
             </div>
             <div>
-              <Button variant='outline' size='icon'>
+              <Button variant='outline' size='icon' onClick={handleLogout}>
                 <LogOut />
               </Button>
             </div>
