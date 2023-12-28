@@ -19,7 +19,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export default function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [form, setForm] = useState({
+  const [form] = useState({
     username: 'admin',
     password: '12345678'
   })

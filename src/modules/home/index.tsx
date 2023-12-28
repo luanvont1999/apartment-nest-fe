@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom'
 export default function HomePage() {
   const navigate = useNavigate()
   const [posts, setPosts] = useState<ListPagination<IPost>>()
-  const [target, setTarget] = useState()
   const { runAsync: fetchPosts, loading: isLoading } = useRequest(postService.getPostsWithoutAuth, {
     manual: true,
     onSuccess: (res) => {
@@ -37,7 +36,7 @@ export default function HomePage() {
         <h1 className='text-4xl text-center font-extrabold mb-4'>Bảng thông báo SkyGarden</h1>
         <div className='flex flex-col gap-y-4'>
           {posts?.data.map((post) => (
-            <Card className='cursor-pointer' onClick={() => handleClickPost(post)}>
+            <Card key={post.id} className='cursor-pointer' onClick={() => handleClickPost(post)}>
               <CardHeader>
                 <CardTitle>{post.title}</CardTitle>
                 <CardDescription>{post.createdAt}</CardDescription>

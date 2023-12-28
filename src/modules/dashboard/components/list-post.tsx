@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 
 export default function ListPost() {
   const [posts, setPosts] = useState<ListPagination<IPost>>()
-  const { runAsync: fetchPosts, loading: isLoading } = useRequest(postService.getPosts, {
+  const { runAsync: fetchPosts } = useRequest(postService.getPosts, {
     manual: true,
     onSuccess: (res) => {
       console.log(res)

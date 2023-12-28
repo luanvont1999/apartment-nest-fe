@@ -17,7 +17,7 @@ export default function QuestionDetail() {
 
   const [answers, setAnswer] = useState<Record<number, number[]>>({})
 
-  const { runAsync: fetchPost, loading: isLoading } = useRequest(postService.getPostByIdWithoutAuth, {
+  const { runAsync: fetchPost } = useRequest(postService.getPostByIdWithoutAuth, {
     manual: true,
     onSuccess: (res) => {
       console.log(res)
@@ -28,22 +28,23 @@ export default function QuestionDetail() {
     }
   })
 
-  const { runAsync: submitAnswer, loading: isSubmitting } = useRequest(postService.submitAnswer, {
-    manual: true,
-    onSuccess: (res) => {
-      console.log(res)
-      setPost(res.data as IPost)
-    },
-    onError: (err: Error | AxiosError) => {
-      handleError(err)
-    }
-  })
+  // const { runAsync: submitAnswer, loading: isSubmitting } = useRequest(postService.submitAnswer, {
+  //   manual: true,
+  //   onSuccess: (res) => {
+  //     console.log(res)
+  //     setPost(res.data as IPost)
+  //   },
+  //   onError: (err: Error | AxiosError) => {
+  //     handleError(err)
+  //   }
+  // })
 
   useEffect(() => {
     id && Number.isInteger(parseInt(id)) && fetchPost(parseInt(id))
   }, [fetchPost, id])
 
   const handleClickAnswer = (qId: number, aId: number) => {
+    console.log('click')
     const _question = post?.questions?.find((x) => x.id === qId)
     if (!_question) return
     if (_question.type === 'single') {
@@ -51,28 +52,23 @@ export default function QuestionDetail() {
     }
     if (_question.type === 'multiple') {
       setAnswer((prev) => {
-        let _ans = prev[qId]
-        if (_ans.includes(aId)) {
-          _ans = _ans.filter((x) => x === aId)
-        } else {
-          _ans.push(aId)
-        }
+        const _ans = prev[qId] || []
 
-        prev[qId] = _ans
-        return { ...prev }
+        return { ...prev, [qId]: _ans.includes(aId) ? _ans.filter((x) => x === aId) : [..._ans, aId] }
       })
     }
   }
+  console.log(answers)
 
-  const handleSubmit = async () => {
-    if (post && !isSubmitting) {
-      // await submitAnswer(post.id, {
-      //   questions: Object.keys(answers).map(ele => {
-      //     return
-      //   })
-      // })
-    }
-  }
+  // const handleSubmit = async () => {
+  //   if (post && !isSubmitting) {
+  //     await submitAnswer(post.id, {
+  //       questions: Object.keys(answers).map((ele) => {
+  //         return
+  //       })
+  //     })
+  //   }
+  // }
 
   return (
     <div className='min-h-screen bg-secondary p-2'>
@@ -99,7 +95,7 @@ export default function QuestionDetail() {
                     )}
                     onClick={() => handleClickAnswer(q.id, a.id)}
                   >
-                    asgd jhasgd hjagsjhd gajhsgd jhasgd hjagsdhj agshjdgajsd gajhsdghjags djhagsjhd ga
+                    {a.title}
                   </div>
                 ))}
               </div>
@@ -117,7 +113,7 @@ export default function QuestionDetail() {
         </div>
 
         <div className='mt-8 text-center'>
-          <Button className='min-w-20' onClick={handleSubmit}>
+          <Button className='min-w-20' onClick={() => {}}>
             Gửi
           </Button>
         </div>
