@@ -5,7 +5,7 @@ import Navbar from './nav'
 
 export default function BaseLayout() {
   return (
-    <div className='min-h-screen flex flex-col border bg-background'>
+    <div className='min-h-screen flex flex-col border bg-secondary'>
       <div className='border-b-2'>
         <div className='container'>
           <div className='flex h-16 justify-between items-center'>

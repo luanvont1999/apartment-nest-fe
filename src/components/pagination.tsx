@@ -1,11 +1,4 @@
-import {
-  Pagination as SPagination,
-  PaginationContent,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis
-} from './ui/pagination'
+import { Pagination as SPagination, PaginationContent, PaginationLink, PaginationEllipsis } from './ui/pagination'
 import { useMemo } from 'react'
 
 const DOTS = '...'
@@ -70,7 +63,6 @@ export default function Pagination({
     <SPagination className={className}>
       <PaginationContent>
         {/* Previous */}
-        <PaginationPrevious />
 
         {/* Body */}
         {paginationRange?.map((item, index) =>
@@ -89,7 +81,6 @@ export default function Pagination({
         )}
 
         {/* Next */}
-        <PaginationNext />
       </PaginationContent>
     </SPagination>
   )

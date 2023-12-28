@@ -31,11 +31,11 @@ export default function ListPost() {
       <div className='flex justify-between items-center mb-4'>
         <div>
           <Button>
-            <Link to='/dashboard/create'>Tạo bài viết</Link>
+            <Link to='./create'>Tạo bài viết</Link>
           </Button>
         </div>
       </div>
-      <Table className='border'>
+      <Table className='border bg-white rounded'>
         <TableHeader>
           <TableRow>
             <TableHead>Bài viết</TableHead>

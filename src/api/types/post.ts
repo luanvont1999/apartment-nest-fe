@@ -13,3 +13,13 @@ export interface CreateQuestionDTO {
 export interface CreateAnswerDTO {
   title: string
 }
+
+export interface SubmitAnswerDTO {
+  questions: Array<{
+    questionId: number
+    answers: Array<{
+      answerId: number
+    }>
+  }>
+  comment: string
+}

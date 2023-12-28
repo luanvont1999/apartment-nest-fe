@@ -15,10 +15,10 @@ const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: {
   type: 'single',
   answers: [
     {
-      title: 'Câu trả lời 1'
+      title: ''
     },
     {
-      title: 'Câu trả lời 2'
+      title: ''
     }
   ]
 }
@@ -46,7 +46,7 @@ export default function DashboardCreate() {
 
   useEffect(() => {
     if (isQuestion && questions.length === 0) {
-      setQuestions([DEFAULT_QUESTION])
+      setQuestions([{ ...DEFAULT_QUESTION }])
     }
   }, [isQuestion, questions])
 
@@ -60,7 +60,7 @@ export default function DashboardCreate() {
   }
 
   const handleAddQuestion = () => {
-    setQuestions((prev) => [...prev, DEFAULT_QUESTION])
+    setQuestions((prev) => [...prev, { ...DEFAULT_QUESTION }])
   }
 
   const handleRemoveQuestion = (index: number) => {
@@ -80,10 +80,11 @@ export default function DashboardCreate() {
   }
 
   const handleChangeQuestionType = (qIndex: number) => (value: boolean) => {
-    console.log(qIndex, value)
     setQuestions((prev) => {
       const _q = prev[qIndex]
+      console.log(_q)
       _q.type = value ? 'multiple' : 'single'
+      console.log(prev)
       return [...prev]
     })
   }
@@ -100,7 +101,7 @@ export default function DashboardCreate() {
     setQuestions((prev) => {
       const _q = prev[qIndex]
       _q.answers[aIndex].title = value
-      return prev
+      return [...prev]
     })
   }
 
@@ -118,7 +119,7 @@ export default function DashboardCreate() {
           Lưu
         </Button>
       </div>
-      <div className='flex flex-col gap-y-4 mb-6 border p-4 rounded-md shadow'>
+      <div className='flex flex-col gap-y-4 mb-6 border p-4 rounded-md shadow bg-white'>
         <Label>
           <span className='text-xl pl-2'>Tiêu đề</span>
           <Input className='mt-2 rounded' name='title' placeholder='Nhập tiêu đề' onChange={handleChangeForm} />
@@ -145,7 +146,7 @@ export default function DashboardCreate() {
         {isQuestion && (
           <div className='flex flex-col mt-4 gap-y-8'>
             {questions.map((q, index) => (
-              <div key={index} className='rounded-md shadow p-4 border'>
+              <div key={index} className='rounded-md shadow p-4 border bg-white'>
                 <Label>
                   <div className='flex justify-between items-center'>
                     <p className='text-base'>Câu hỏi {index + 1}</p>
@@ -186,7 +187,7 @@ export default function DashboardCreate() {
                       <Input
                         value={ans.title}
                         className='rounded'
-                        placeholder='Nội dung câu trả lời'
+                        placeholder={`Câu trả lời ${aIndex + 1}`}
                         onChange={(event) => handleChangeAnswer(index, aIndex, event.target.value)}
                       />
                     </div>

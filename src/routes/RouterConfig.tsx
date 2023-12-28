@@ -6,9 +6,22 @@ import PageNotFound from '@/modules/page-not-found'
 import Dashboard from '@/modules/dashboard'
 import BaseLayout from '@/layout/base'
 import DashboardCreate from '@/modules/dashboard/create'
+import HomePage from '@/modules/home'
+import QuestionDetail from '@/modules/home/detail'
 export const Routes = createBrowserRouter([
   {
     path: '/',
+    children: [
+      {
+        index: true,
+        element: <HomePage />
+      },
+      { path: '/question/:id', element: <QuestionDetail /> }
+    ]
+  },
+
+  {
+    path: '/admin',
     element: (
       <AuthRoute>
         <Outlet />
@@ -17,16 +30,16 @@ export const Routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to='/login' replace />
+        element: <Navigate to='/admin/login' replace />
       },
       {
-        path: '/login',
+        path: '/admin/login',
         element: <LoginPage />
       }
     ]
   },
   {
-    path: '/',
+    path: '/admin',
     element: (
       <PrivateRoute>
         <BaseLayout />
@@ -34,7 +47,7 @@ export const Routes = createBrowserRouter([
     ),
     children: [
       {
-        path: '/dashboard',
+        path: '/admin/dashboard',
 
         children: [
           {
@@ -42,7 +55,7 @@ export const Routes = createBrowserRouter([
             element: <Dashboard />
           },
           {
-            path: 'create',
+            path: '/admin/dashboard/create',
             element: <DashboardCreate />
           }
         ]

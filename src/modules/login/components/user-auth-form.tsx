@@ -36,7 +36,7 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
           })
           // message.success('Login Success')
           dispatch(setUserInfo(data.user))
-          navigate('/dashboard')
+          navigate('/admin/dashboard')
         } else {
           // message.error('Account or password is incorrect')
         }
