@@ -8,6 +8,7 @@ import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 export default function ListPost() {
   const [posts, setPosts] = useState<ListPagination<IPost>>()
@@ -38,7 +39,9 @@ export default function ListPost() {
       <Table className='border bg-white rounded'>
         <TableHeader>
           <TableRow>
-            <TableHead>Bài viết</TableHead>
+            <TableHead>
+              <p className='font-bold'>Bài viết</p>
+            </TableHead>
             <TableHead>Ngày đăng</TableHead>
             <TableHead>Lượt xem</TableHead>
             <TableHead>Lượt phản hồi</TableHead>
@@ -48,7 +51,7 @@ export default function ListPost() {
           {posts?.data.map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.title}</TableCell>
-              <TableCell>{item.createdAt}</TableCell>
+              <TableCell>{moment(item.createdAt).format('DD/MM/YYYY')}</TableCell>
               <TableCell>{item.title}</TableCell>
               <TableCell>{item.title}</TableCell>
             </TableRow>
