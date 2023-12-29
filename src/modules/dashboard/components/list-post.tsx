@@ -12,14 +12,20 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { IPost, ListPagination } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
-import { Trash2 } from 'lucide-react'
+import { LoaderIcon, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { Input } from '@/components/ui/input'
+import { Icons } from '@/components/icons'
+import clsx from 'clsx'
+
+let debounce: NodeJS.Timeout
 
 export default function ListPost() {
   const navigate = useNavigate()
   const [posts, setPosts] = useState<ListPagination<IPost>>()
+  const [search, setSearch] = useState('')
   const [target, setTarget] = useState<IPost | null>(null)
-  const { runAsync: fetchPosts } = useRequest(postService.getPosts, {
+  const { runAsync: fetchPosts, loading: isLoading } = useRequest(postService.getPosts, {
     manual: true,
     onSuccess: (res) => {
       console.log(res)
@@ -41,8 +47,13 @@ export default function ListPost() {
   })
 
   useEffect(() => {
-    fetchPosts()
-  }, [fetchPosts])
+    if (debounce) {
+      clearTimeout(debounce)
+    }
+    setTimeout(() => {
+      fetchPosts({ search: search ? search : undefined })
+    }, 300)
+  }, [fetchPosts, search])
 
   const handleChangePage = (value: number) => {
     fetchPosts({ page: value, perPage: posts?.perPage || 10 })
@@ -50,7 +61,11 @@ export default function ListPost() {
 
   return (
     <div className='flex flex-col flex-1'>
-      <div className='flex justify-between items-center mb-4'>
+      <div className='flex gap-2 justify-between items-center mb-4 flex-wrap'>
+        <div className='flex-1 min-w-40 max-w-[400px] flex items-center gap-x-2'>
+          <Input placeholder='Tìm kiếm tiêu đề' value={search} onChange={(event) => setSearch(event?.target.value)} />
+          <Icons.spinner className={clsx('animate-spin', !isLoading && 'invisible')} />
+        </div>
         <div>
           <Button>
             <Link to='./create'>Tạo bài viết</Link>
