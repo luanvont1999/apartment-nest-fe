@@ -13,7 +13,7 @@ export default function BaseLayout() {
     manual: true,
     onFinally: () => {
       removeLocalStorage('token')
-      navigate('/admin/login')
+      navigate('/login')
     }
   })
   return (

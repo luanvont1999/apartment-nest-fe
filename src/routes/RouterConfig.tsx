@@ -6,25 +6,14 @@ import PageNotFound from '@/modules/page-not-found'
 import Dashboard from '@/modules/dashboard'
 import BaseLayout from '@/layout/base'
 import DashboardCreate from '@/modules/dashboard/create'
-import HomePage from '@/modules/home'
 import QuestionDetail from '@/modules/home/detail'
 import SuccessPage from '@/modules/home/success'
 import DashboardDetail from '@/modules/dashboard/detail'
 export const Routes = createBrowserRouter([
+  { path: '/question/:id', element: <QuestionDetail /> },
+  { path: '/success', element: <SuccessPage /> },
   {
     path: '/',
-    children: [
-      {
-        index: true,
-        element: <HomePage />
-      },
-      { path: '/question/:id', element: <QuestionDetail /> },
-      { path: '/success', element: <SuccessPage /> }
-    ]
-  },
-
-  {
-    path: '/admin',
     element: (
       <AuthRoute>
         <Outlet />
@@ -33,16 +22,16 @@ export const Routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to='/admin/login' replace />
+        element: <Navigate to='/login' replace />
       },
       {
-        path: '/admin/login',
+        path: '/login',
         element: <LoginPage />
       }
     ]
   },
   {
-    path: '/admin',
+    path: '/',
     element: (
       <PrivateRoute>
         <BaseLayout />
@@ -50,7 +39,7 @@ export const Routes = createBrowserRouter([
     ),
     children: [
       {
-        path: '/admin/dashboard',
+        path: '/dashboard',
 
         children: [
           {
@@ -58,11 +47,11 @@ export const Routes = createBrowserRouter([
             element: <Dashboard />
           },
           {
-            path: '/admin/dashboard/create',
+            path: '/dashboard/create',
             element: <DashboardCreate />
           },
           {
-            path: '/admin/dashboard/:id',
+            path: '/dashboard/:id',
             element: <DashboardDetail />
           }
         ]

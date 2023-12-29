@@ -33,7 +33,7 @@ export default function DashboardCreate() {
     manual: true,
     onSuccess: (res) => {
       console.log(res)
-      navigate('/admin/dashboard')
+      navigate('/dashboard')
     },
     onError: (err: Error | AxiosError) => {
       handleError(err)

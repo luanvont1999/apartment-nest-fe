@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const ITEMS = [{ label: 'Bảng câu hỏi', path: '/admin/dashboard' }]
+const ITEMS = [{ label: 'Bảng câu hỏi', path: '/dashboard' }]
 
 export default function Navbar() {
   return (

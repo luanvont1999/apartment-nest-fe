@@ -35,7 +35,7 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
             refreshToken: data.refreshToken
           })
           dispatch(setUserInfo(data.user))
-          navigate('/admin/dashboard')
+          navigate('/dashboard')
         } else {
           // message.error('Account or password is incorrect')
         }
