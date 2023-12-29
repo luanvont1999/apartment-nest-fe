@@ -21,5 +21,5 @@ export interface SubmitAnswerDTO {
       answerId: number
     }>
   }>
-  comment: string
+  comment?: string
 }

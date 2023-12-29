@@ -49,7 +49,7 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
         questions: Object.entries(answers).map(([key, value]) => {
           return { questionId: parseInt(key), answers: value.map((x) => ({ answerId: x })) }
         }),
-        comment
+        comment: comment ? comment : undefined
       })
     }
   }
