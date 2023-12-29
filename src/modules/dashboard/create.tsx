@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { handleError } from '@/utils/helpers'
 import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
-import { Plus, X } from 'lucide-react'
+import { Minus, Plus, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -98,6 +98,13 @@ export default function DashboardCreate() {
     })
   }
 
+  const handleRemoveAnswer = (qIndex: number, aIndex: number) => {
+    setQuestions((prev) => {
+      prev[qIndex].answers.splice(aIndex, 1)
+      return [...prev]
+    })
+  }
+
   const handleSubmit = async () => {
     if (!isLoading) {
       await onSubmit({ ...form, questions: isQuestion ? questions : [] })
@@ -167,7 +174,9 @@ export default function DashboardCreate() {
                 <div className='flex justify-between items-center mt-4'>
                   <div className='flex items-center gap-x-2'>
                     <p className='text-base'>Bảng câu trả lời</p>
-                    <Plus className='w-4 h-4 cursor-pointer' onClick={() => handleAddAnswer(index)} />
+                    <Button variant='ghost' size='icon' onClick={() => handleAddAnswer(index)}>
+                      <Plus className='w-4 h-4 cursor-pointer' />
+                    </Button>
                   </div>
                   <Label className='flex items-center gap-x-2'>
                     <span>Chọn nhiều</span>
@@ -176,13 +185,18 @@ export default function DashboardCreate() {
                 </div>
                 <div className='flex flex-col gap-y-3 mt-2'>
                   {q.answers.map((ans, aIndex) => (
-                    <div key={aIndex}>
-                      <Input
-                        value={ans.title}
-                        className='rounded'
-                        placeholder={`Câu trả lời ${aIndex + 1}`}
-                        onChange={(event) => handleChangeAnswer(index, aIndex, event.target.value)}
-                      />
+                    <div className='flex gap-x-2' key={aIndex}>
+                      <div className='flex-1'>
+                        <Input
+                          value={ans.title}
+                          className='rounded'
+                          placeholder={`Câu trả lời ${aIndex + 1}`}
+                          onChange={(event) => handleChangeAnswer(index, aIndex, event.target.value)}
+                        />
+                      </div>
+                      <Button variant='ghost' size='icon' onClick={() => handleRemoveAnswer(index, aIndex)}>
+                        <Minus className='w-4 h-4' />
+                      </Button>
                     </div>
                   ))}
                 </div>
