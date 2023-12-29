@@ -20,8 +20,8 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form, setForm] = useState({
-    username: 'admin',
-    password: '12345678'
+    username: '',
+    password: ''
   })
 
   const { runAsync: onLogin, loading: loginLoading } = useRequest(authService.login, {
@@ -42,9 +42,6 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
       }
     },
     onError: (err: Error | AxiosError) => {
-      // if (axios.isAxiosError(err)) {
-      //   message.error(err.response?.data.message ?? 'Something went wrong')
-      // }
       handleError(err)
     }
   })
