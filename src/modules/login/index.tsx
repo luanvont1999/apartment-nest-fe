@@ -22,7 +22,7 @@ export default function LoginPage() {
             </svg>
             Techwiz
           </div>
-          <div className='relative z-20 mt-auto'>
+          {/* <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
               <p className='text-lg'>
                 &ldquo;This library has saved me countless hours of work and helped me deliver stunning designs to my
@@ -30,7 +30,7 @@ export default function LoginPage() {
               </p>
               <footer className='text-sm'>Sofia Davis</footer>
             </blockquote>
-          </div>
+          </div> */}
         </div>
         <div className='lg:p-8'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
