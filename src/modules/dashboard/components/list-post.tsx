@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Icons } from '@/components/icons'
 import clsx from 'clsx'
+import { ENV } from '@/constants'
 
 let debounce: NodeJS.Timeout
 
@@ -117,7 +118,7 @@ export default function ListPost() {
             </DialogTitle>
             <DialogDescription>
               <div className='flex justify-center mt-8'>
-                {target && <QRCode value={`https://apartment-nest-fe.vercel.app/question/${target.id}`} />}
+                {target && <QRCode value={`${ENV.baseUrlApi}/question/${target.id}`} />}
               </div>
             </DialogDescription>
           </DialogHeader>
