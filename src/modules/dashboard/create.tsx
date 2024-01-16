@@ -114,7 +114,7 @@ export default function DashboardCreate() {
   return (
     <div className='flex flex-col'>
       <div className='flex justify-between items-center mb-6'>
-        <h2 className='text-2xl font-semibold'>Tạo bài viết</h2>
+        <h2 className='text-2xl font-semibold'>Tạo mới ý kiến</h2>
         <Button className='text-md font-medium' onClick={handleSubmit}>
           Lưu
         </Button>

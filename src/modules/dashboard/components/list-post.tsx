@@ -68,14 +68,14 @@ export default function ListPost() {
         </div>
         <div>
           <Button>
-            <Link to='./create'>Tạo bài viết</Link>
+            <Link to='./create'>Tạo ý kiến</Link>
           </Button>
         </div>
       </div>
       <Table className='border bg-white rounded'>
         <TableHeader>
           <TableRow>
-            <TableHead>Bài viết</TableHead>
+            <TableHead>Ý kiến</TableHead>
             <TableHead className='w-40 text-center'>Ngày đăng</TableHead>
             <TableHead className='w-20' />
           </TableRow>

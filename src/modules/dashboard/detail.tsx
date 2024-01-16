@@ -47,10 +47,10 @@ export default function DashboardDetail() {
 
         <div className='flex gap-x-4'>
           <Button
-            className=''
             onClick={() => {
               const url = `${location.origin}/question/${id}`
               navigator.clipboard.writeText(url)
+              alert('Đã sao chép vào bộ nhớ tạm')
             }}
           >
             Copy Link
@@ -83,7 +83,7 @@ export default function DashboardDetail() {
         </div>
       </div>
       <div className='bg-white p-4 rounded-md border'>
-        <h3 className='text-2xl font-bold'>Bài viết: {post?.title}</h3>
+        <h3 className='text-2xl font-bold'>Ý kiến: {post?.title}</h3>
         <p className='text-muted-foreground text-sm mb-4'>Ngày đăng: {moment(post?.createdAt).format('DD/MM/YYYY')}</p>
         <div dangerouslySetInnerHTML={{ __html: post?.content as string }} />
       </div>

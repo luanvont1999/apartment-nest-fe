@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
 import AnswerForm from './components/answer-form'
+import QRDialog from '@/components/qr-dialog'
 
 export default function QuestionDetail() {
   const { id } = useParams()
@@ -31,7 +32,10 @@ export default function QuestionDetail() {
     <div className='min-h-screen bg-secondary p-2'>
       <div className='container max-w-[1024px]'>
         <div className='bg-white p-4 rounded-md'>
-          <h1 className='text-2xl md:text-3xl font-bold'>{post?.title}</h1>
+          <div className='flex justify-between'>
+            <h1 className='text-2xl md:text-3xl font-bold'>{post?.title}</h1>
+            {post && <QRDialog post={post} btnText='Chia sẻ' print={false} />}
+          </div>
           <p className='text-sm text-muted-foreground'>{moment(post?.createdAt).format('DD/MM/YYYY')}</p>
           <div className='mt-4' dangerouslySetInnerHTML={{ __html: post?.content as string }} />
         </div>
