@@ -1,10 +1,12 @@
 import postService from '@/api/post'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { IQuestion } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
+import { Label } from '@radix-ui/react-label'
 import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
 import clsx from 'clsx'
@@ -16,6 +18,7 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
   const navigate = useNavigate()
   const [answers, setAnswer] = useState<Record<number, number[]>>({})
   const [comment, setComment] = useState('')
+  const [phone, setPhone] = useState('')
 
   const { runAsync: submitAnswer, loading: isSubmitting } = useRequest(postService.submitAnswer, {
     manual: true,
@@ -48,7 +51,8 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
         questions: Object.entries(answers).map(([key, value]) => {
           return { questionId: parseInt(key), answers: value.map((x) => ({ answerId: x })) }
         }),
-        comment: comment ? comment : undefined
+        comment: comment ? comment : undefined,
+        phone: phone ? phone : undefined
       })
     }
   }
@@ -98,12 +102,17 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
       <div className='mt-8'>
         <h3 className='text-lg font-semibold mb-1'>Bình luận:</h3>
         <Textarea
-          className='focus:outline-none ring-0 focus:ring-0'
+          className='focus:outline-none ring-0 focus:ring-0 mb-4'
           placeholder='Mong quý khách đóng góp ý kiến...'
           rows={5}
           value={comment}
           onChange={(event) => setComment(event.target.value)}
         />
+
+        <Label className='mt-8'>
+          <span className='text-sm mb-2 italic'>Số điện thoại (không bắt buộc): </span>
+          <Input type='phone' onChange={(event) => setPhone(event.target.value)} className='mt-1' />
+        </Label>
       </div>
 
       <div className='mt-8 text-center'>

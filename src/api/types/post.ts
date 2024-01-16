@@ -22,4 +22,5 @@ export interface SubmitAnswerDTO {
     }>
   }>
   comment?: string
+  phone?: string
 }

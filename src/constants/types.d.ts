@@ -45,6 +45,7 @@ export interface IAnswer {
 export interface IComment {
   id: number
   content: string
+  phone: string
   status: 'active' | 'inactive'
 
   postId: number

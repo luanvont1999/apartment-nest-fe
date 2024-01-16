@@ -48,7 +48,7 @@ export default function ListComment({ postId }: { postId: number }) {
         {comments?.data.map((cmt) => (
           <div key={cmt.id} className='border p-2 rounded-md relative'>
             <p className='text-sm text-muted-foreground mb-2'>
-              {moment(cmt.createdAt).format('HH:mm:ss [ngày] DD/MM/YYYY')}
+              <b>{cmt.phone}</b> - {moment(cmt.createdAt).format('HH:mm:ss [ngày] DD/MM/YYYY')}
             </p>
             <p>{cmt.content}</p>
             <Button
