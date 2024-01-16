@@ -29,7 +29,6 @@ export default function ListPost() {
   const { runAsync: fetchPosts, loading: isLoading } = useRequest(postService.getPosts, {
     manual: true,
     onSuccess: (res) => {
-      console.log(res)
       setPosts(res.data as ListPagination<IPost>)
     },
     onError: (err: Error | AxiosError) => {

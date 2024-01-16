@@ -60,8 +60,6 @@ export default function Pagination({
     }
   }, [total, perPage, siblingCount, page])
 
-  console.log(paginationRange)
-
   return (
     <SPagination className={className}>
       <PaginationContent>

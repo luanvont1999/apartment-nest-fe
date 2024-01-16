@@ -31,8 +31,6 @@
     "next-themes": "^0.2.1",
     "qrcode": "^1.5.3",
     "quill-blot-formatter": "^1.0.5",
-    "quill-image-drop-module": "^1.0.3",
-    "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",

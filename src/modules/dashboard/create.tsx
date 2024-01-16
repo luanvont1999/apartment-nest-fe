@@ -32,8 +32,7 @@ export default function DashboardCreate() {
 
   const { runAsync: onSubmit, loading: isLoading } = useRequest(postService.setPost, {
     manual: true,
-    onSuccess: (res) => {
-      console.log(res)
+    onSuccess: () => {
       navigate('/dashboard')
     },
     onError: (err: Error | AxiosError) => {

@@ -1,8 +1,8 @@
 import '@/styles/custom-quill.css'
-import { useQuill } from 'react-quilljs'
-import BlotFormatter from 'quill-blot-formatter'
+import ReactQuill, { Quill } from 'react-quill'
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter'
 
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import uploadService from '@/api/upload'
 
@@ -11,33 +11,17 @@ type TextEditorType = {
   setValue: (_: string) => void
 }
 
+Quill.register('modules/blotFormatter', BlotFormatter)
+
 let debounce: number | NodeJS.Timeout
 
 const TextEditor = ({ value, setValue }: TextEditorType) => {
   const [loading, setLoading] = useState(false)
-  const modules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-          ['image', 'link']
-        ]
-      },
-      blotFormatter: {}
-    }),
-    []
-  )
-
-  const { quill, quillRef, Quill } = useQuill({ modules })
-
-  if (Quill && !quill) {
-    // const BlotFormatter = require('quill-blot-formatter');
-    Quill.register('modules/blotFormatter', BlotFormatter)
-  }
+  const quillRef = useRef<ReactQuill | null>(null)
 
   const imageUploadHandler = useCallback(async () => {
+    if (!quillRef?.current) return
+    const editor = quillRef.current.getEditor()
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
@@ -47,13 +31,17 @@ const TextEditor = ({ value, setValue }: TextEditorType) => {
       try {
         setLoading(true)
         const file = input.files?.[0]
-        if (quill && file && /^image\//.test(file.type)) {
+        if (editor && file && /^image\//.test(file.type)) {
           const formData = new FormData()
+          formData.append('folder', 'post')
           formData.append('file', file)
           const { data } = await uploadService.uploadFile(formData) // upload data into server or aws or cloudinary
           const url = data?.location
-          const selection = quill.getSelection()?.index
-          if (selection !== undefined) quill.insertEmbed(selection, 'image', url)
+          const selection = editor.getSelection()?.index
+
+          if (selection !== undefined) {
+            editor.insertEmbed(selection || 0, 'image', url)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -61,32 +49,39 @@ const TextEditor = ({ value, setValue }: TextEditorType) => {
         setLoading(false)
       }
     }
-  }, [quill])
+  }, [])
 
-  React.useEffect(() => {
-    if (quill) {
-      quill.clipboard.dangerouslyPasteHTML(value)
-
-      quill.on('text-change', () => {
-        if (debounce) {
-          clearTimeout(debounce)
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+          ['image', 'link']
+        ],
+        handlers: {
+          image: imageUploadHandler
         }
-        debounce = setTimeout(() => {
-          setValue(quill.root.innerHTML)
-        }, 300)
-      })
+      },
+      blotFormatter: {}
+    }),
+    []
+  )
 
-      // Add custom handler for Image Upload
-      quill.getModule('toolbar').addHandler('image', imageUploadHandler)
+  const handleChange = (value: string) => {
+    if (debounce) {
+      clearTimeout(debounce)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageUploadHandler])
+    debounce = setTimeout(() => {
+      setValue(value)
+    }, 300)
+  }
 
   return (
-    <div className='w-full pb-12 mt-2'>
-      <div className='text-editor relative' ref={quillRef}>
-        {loading && <div className='absolute inset-0 bg-black/20' />}
-      </div>
+    <div className='w-full pb-12 relative'>
+      <ReactQuill ref={quillRef} theme='snow' modules={modules} defaultValue={value} onChange={handleChange} />
+      {loading && <div className='absolute inset-0 bg-black/20' />}
     </div>
   )
 }

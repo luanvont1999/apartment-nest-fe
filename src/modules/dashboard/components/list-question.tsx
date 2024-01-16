@@ -2,7 +2,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { IQuestion } from '@/constants/types'
 
 export default function ListQuestion({ questions }: { questions: IQuestion[] }) {
-  console.log(questions)
   return (
     <div className='flex flex-col gap-y-4'>
       {questions.map((q, index) => (
