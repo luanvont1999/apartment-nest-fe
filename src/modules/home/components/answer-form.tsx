@@ -11,11 +11,17 @@ import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
 import clsx from 'clsx'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import ReCAPTCHA from 'react-google-recaptcha'
+import { ENV } from '@/constants'
 
 export default function AnswerForm({ postId, questions }: { postId: number; questions: IQuestion[] }) {
   const navigate = useNavigate()
+
+  const captchaRef = useRef<ReCAPTCHA | null>(null)
+  const [captchaValue, setCaptchaValue] = useState('')
   const [answers, setAnswer] = useState<Record<number, number[]>>({})
   const [comment, setComment] = useState('')
   const [phone, setPhone] = useState('')
@@ -46,7 +52,7 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
   }
 
   const handleSubmit = async () => {
-    if (!isSubmitting) {
+    if (!isSubmitting && captchaValue) {
       await submitAnswer(postId, {
         questions: Object.entries(answers).map(([key, value]) => {
           return { questionId: parseInt(key), answers: value.map((x) => ({ answerId: x })) }
@@ -116,6 +122,15 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
       </div>
 
       <div className='mt-8 text-center'>
+        <ReCAPTCHA
+          ref={captchaRef}
+          className='flex justify-center mb-2'
+          sitekey={ENV.recaptchaApiKey}
+          onChange={(value) => {
+            console.log(value)
+            setCaptchaValue(value as string)
+          }}
+        />
         <Button disabled={isSubmitting} className='min-w-20' onClick={handleSubmit}>
           {isSubmitting && <Loader2 className='animate-spin mr-2' />}
           Gửi

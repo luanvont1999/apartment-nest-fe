@@ -20,6 +20,7 @@ const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: {
 
 export default function DashboardCreate() {
   const navigate = useNavigate()
+
   const [isQuestion, setIsQuestion] = useState(false)
   const [form, setForm] = useState({
     title: '',

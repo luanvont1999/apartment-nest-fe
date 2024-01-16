@@ -3,18 +3,18 @@ import { AxiosError } from 'axios'
 import { ChevronLeft } from 'lucide-react'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import QRCode from 'react-qr-code'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import postService from '@/api/post'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import QRCode from 'react-qr-code'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { IPost } from '@/constants/types'
 import { handleError } from '@/utils/helpers'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 
 import ListComment from './components/list-comment'
 import ListQuestion from './components/list-question'
-import { PDFDownloadLink } from '@react-pdf/renderer'
 import PDFTemplate from './components/pdf-template'
 
 export default function DashboardDetail() {
@@ -49,8 +49,9 @@ export default function DashboardDetail() {
           <Button
             onClick={() => {
               const url = `${location.origin}/question/${id}`
-              navigator.clipboard.writeText(url)
-              alert('Đã sao chép vào bộ nhớ tạm')
+              navigator.clipboard.writeText(url).then(() => {
+                alert(`Đã sao chép vào bộ nhớ tạm`)
+              })
             }}
           >
             Copy Link
