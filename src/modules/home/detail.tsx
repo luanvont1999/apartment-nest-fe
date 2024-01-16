@@ -16,7 +16,6 @@ export default function QuestionDetail() {
   const { runAsync: fetchPost } = useRequest(postService.getPostByIdWithoutAuth, {
     manual: true,
     onSuccess: (res) => {
-      console.log(res)
       setPost(res.data as IPost)
     },
     onError: (err: Error | AxiosError) => {
@@ -34,7 +33,7 @@ export default function QuestionDetail() {
         <div className='bg-white p-4 rounded-md'>
           <h1 className='text-2xl md:text-3xl font-bold'>{post?.title}</h1>
           <p className='text-sm text-muted-foreground'>{moment(post?.createdAt).format('DD/MM/YYYY')}</p>
-          <p className='mt-4'>{post?.content}</p>
+          <div className='mt-4' dangerouslySetInnerHTML={{ __html: post?.content as string }} />
         </div>
 
         {post?.questions && <AnswerForm postId={post.id} questions={post?.questions} />}

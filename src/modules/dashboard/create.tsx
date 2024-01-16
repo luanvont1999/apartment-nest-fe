@@ -1,15 +1,16 @@
-import postService from '@/api/post'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
-import { handleError } from '@/utils/helpers'
 import { useRequest } from 'ahooks'
 import { AxiosError } from 'axios'
 import { Minus, Plus, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import postService from '@/api/post'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { handleError } from '@/utils/helpers'
+import TextEditor from './components/text-editor'
 
 const DEFAULT_QUESTION: { title: string; type: 'single' | 'multiple'; answers: { title: string }[] } = {
   title: '',
@@ -125,16 +126,10 @@ export default function DashboardCreate() {
           <Input className='mt-2 rounded' name='title' placeholder='Nhập tiêu đề' onChange={handleChangeForm} />
         </Label>
 
-        <Label>
-          <span className='pl-2'>Nội dung</span>
-          <Textarea
-            className='mt-2 rounded'
-            name='content'
-            placeholder='Nhập nội dung'
-            rows={5}
-            onChange={handleChangeForm}
-          />
-        </Label>
+        <div>
+          <span className='text-xl pl-2 mb-2'>Nội dung</span>
+          <TextEditor value={form.content} setValue={(value) => setForm((prev) => ({ ...prev, content: value }))} />
+        </div>
       </div>
 
       <div className='flex flex-col'>

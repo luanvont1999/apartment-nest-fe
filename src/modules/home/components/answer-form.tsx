@@ -19,8 +19,7 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
 
   const { runAsync: submitAnswer, loading: isSubmitting } = useRequest(postService.submitAnswer, {
     manual: true,
-    onSuccess: (res) => {
-      console.log(res)
+    onSuccess: () => {
       navigate('/success')
     },
     onError: (err: Error | AxiosError) => {
@@ -66,7 +65,7 @@ export default function AnswerForm({ postId, questions }: { postId: number; ques
 
             <RadioGroup className='flex flex-col gap-y-4'>
               {q.answers?.map((a) => (
-                <div className='flex gap-x-2 items-center'>
+                <div className='flex gap-x-2 items-center' key={a.id}>
                   {q.type === 'single' ? (
                     <RadioGroupItem
                       checked={answers[q.id] && answers[q.id].includes(a.id)}

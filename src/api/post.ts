@@ -25,8 +25,9 @@ const getPostComments = (params?: {
   postId?: number
 }) =>
   api.get('/admin/comments', {
-    params: params
+    params
   })
+
 const deleteComment = (id: number) => api.delete(`/admin/comments/${id}`)
 
 const postService = {

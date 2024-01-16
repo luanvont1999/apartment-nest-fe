@@ -14,7 +14,6 @@ import { handleError } from '@/utils/helpers'
 
 import ListComment from './components/list-comment'
 import ListQuestion from './components/list-question'
-import { ENV } from '@/constants'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import PDFTemplate from './components/pdf-template'
 
@@ -27,7 +26,6 @@ export default function DashboardDetail() {
   const { runAsync: fetchPost } = useRequest(postService.getPost, {
     manual: true,
     onSuccess: (res) => {
-      console.log(res)
       setPost(res.data as IPost)
     },
     onError: (err: Error | AxiosError) => {
@@ -47,10 +45,19 @@ export default function DashboardDetail() {
           <span>Trở về</span>
         </Button>
 
-        <div>
+        <div className='flex gap-x-4'>
+          <Button
+            className=''
+            onClick={() => {
+              const url = `${location.origin}/question/${id}`
+              navigator.clipboard.writeText(url)
+            }}
+          >
+            Copy Link
+          </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button>Tạo PDF</Button>
+              <Button>QR Code</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -59,7 +66,7 @@ export default function DashboardDetail() {
                 </DialogTitle>
               </DialogHeader>
               <div className='flex flex-col items-center'>
-                <QRCode value={`${ENV.websiteUrl}/question/${post?.id}`} size={160} />
+                <QRCode value={`${location.origin}/question/${post?.id}`} size={160} />
                 <p className='mt-2'>Quét QRCode để chia sẻ ý kiến của bạn</p>
               </div>
               <div className='text-right'>
@@ -78,7 +85,7 @@ export default function DashboardDetail() {
       <div className='bg-white p-4 rounded-md border'>
         <h3 className='text-2xl font-bold'>Bài viết: {post?.title}</h3>
         <p className='text-muted-foreground text-sm mb-4'>Ngày đăng: {moment(post?.createdAt).format('DD/MM/YYYY')}</p>
-        <p>{post?.content}</p>
+        <div dangerouslySetInnerHTML={{ __html: post?.content as string }} />
       </div>
 
       <div className='bg-white p-4 rounded-md border mt-4'>
