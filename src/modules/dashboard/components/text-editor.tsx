@@ -65,7 +65,6 @@ const TextEditor = ({ value, setValue }: TextEditorType) => {
 
   React.useEffect(() => {
     if (quill) {
-      // Initial Value
       quill.clipboard.dangerouslyPasteHTML(value)
 
       quill.on('text-change', () => {
@@ -81,12 +80,12 @@ const TextEditor = ({ value, setValue }: TextEditorType) => {
       quill.getModule('toolbar').addHandler('image', imageUploadHandler)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quill, imageUploadHandler, setValue])
+  }, [imageUploadHandler])
 
   return (
-    <div className='w-full pb-12'>
+    <div className='w-full pb-12 mt-2'>
       <div className='text-editor relative' ref={quillRef}>
-        {loading && <div className='absolute inset-0 bg-black' />}
+        {loading && <div className='absolute inset-0 bg-black/20' />}
       </div>
     </div>
   )

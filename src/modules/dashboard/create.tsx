@@ -133,7 +133,7 @@ export default function DashboardCreate() {
       </div>
 
       <div className='flex flex-col'>
-        <Label className='flex items-center gap-x-4'>
+        <Label className='flex items-center gap-x-4 w-fit'>
           <Switch checked={isQuestion} onCheckedChange={setIsQuestion} />
           <span className='text-xl'>Tạo câu hỏi khảo sát</span>
         </Label>
