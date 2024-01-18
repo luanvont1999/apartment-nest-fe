@@ -4,6 +4,22 @@ export interface CreatePostDTO {
   questions: CreateQuestionDTO[]
 }
 
+export interface EditPostDTO {
+  title: string
+  content: string
+  questions: Array<{
+    questionId: number
+    title: string
+    type: 'single' | 'multiple'
+    answers: Array<{
+      answerId: number
+      title: string
+      deleted: boolean
+    }>
+    deleted: boolean
+  }>
+}
+
 export interface CreateQuestionDTO {
   title: string
   type: 'single' | 'multiple'

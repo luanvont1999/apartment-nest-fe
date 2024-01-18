@@ -1,10 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { IQuestion } from '@/constants/types'
+import { sortTimestamp } from '@/utils/helpers'
 
 export default function ListQuestion({ questions }: { questions: IQuestion[] }) {
   return (
     <div className='flex flex-col gap-y-4'>
-      {questions.map((q, index) => (
+      {questions.sort(sortTimestamp()).map((q, index) => (
         <div key={q.id}>
           <h4 className='text-xl font-medium mb-1'>
             Câu hỏi {index + 1}: {q.title}

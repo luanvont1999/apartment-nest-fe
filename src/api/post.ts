@@ -1,5 +1,7 @@
+import { IPost } from '@/constants/types'
 import { api } from '.'
-import { CreatePostDTO, SubmitAnswerDTO } from './types/post'
+import { CreatePostDTO, EditPostDTO, SubmitAnswerDTO } from './types/post'
+import { AxiosResponse } from 'axios'
 
 const getPosts = (params?: {
   page?: number
@@ -8,8 +10,9 @@ const getPosts = (params?: {
   status?: 'active' | 'inactive'
   search?: string
 }) => api.get('/admin/posts', { params })
-const getPost = (id: number) => api.get(`/admin/posts/${id}`)
+const getPost = (id: number): Promise<AxiosResponse<IPost>> => api.get(`/admin/posts/${id}`)
 const setPost = (payload: CreatePostDTO) => api.post('/admin/posts', payload)
+const editPost = (id: number, payload: EditPostDTO) => api.patch(`/admin/posts/${id}`, payload)
 const deletePost = (id: number) => api.delete(`/admin/posts/${id}`)
 
 const getPostsWithoutAuth = () => api.get('/posts')
@@ -34,6 +37,7 @@ const postService = {
   getPosts,
   getPost,
   setPost,
+  editPost,
   deletePost,
   getPostsWithoutAuth,
   getPostByIdWithoutAuth,

@@ -41,3 +41,15 @@ export const removeLocalStorage = (key: string) => {
 export const handleError = (error: unknown) => {
   console.log(error)
 }
+
+export const sortTimestamp =
+  (sortBy: 'asc' | 'desc' = 'desc', key: string = 'createdAt') =>
+  (x: any, y: any) => {
+    const [timeX, timeY] =
+      sortBy === 'desc'
+        ? [new Date(x[key]).getTime(), new Date(y[key]).getTime()]
+        : [new Date(y[key]).getTime(), new Date(x[key]).getTime()]
+
+    console.log(x, y)
+    return timeX - timeY
+  }

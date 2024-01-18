@@ -81,6 +81,8 @@ export default function DashboardDetail() {
               </div>
             </DialogContent>
           </Dialog>
+
+          <Button onClick={() => navigate('./edit')}>Chỉnh sửa</Button>
         </div>
       </div>
       <div className='bg-white p-4 rounded-md border'>
